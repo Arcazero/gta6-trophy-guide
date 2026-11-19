@@ -14,7 +14,7 @@
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
@@ -22,12 +22,15 @@ import { buildDossier } from './vendor/makefun-frontend.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-// Clear the output directory first so a stale file from an earlier run can
-// never leak into the handed-in entry; the copies below rebuild it from
-// scratch, which also keeps repeated runs byte-identical.
-rmSync(out, { recursive: true, force: true });
-
+// Clear the output directory's contents first so a stale file from an
+// earlier run can never leak into the handed-in entry; the copies below
+// rebuild it from scratch, which also keeps repeated runs byte-identical.
+// Only the entries inside the directory are removed, never the directory
+// itself: in the grader /output is a mount point and the runner cannot
+// remove it (no write permission on its parent).
 mkdirSync(out, { recursive: true });
+for (const entry of readdirSync(out)) rmSync(join(out, entry), { recursive: true, force: true });
+
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
 mkdirSync(join(out, 'screenshots'), { recursive: true });
 if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
