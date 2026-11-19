@@ -1,7 +1,218 @@
-body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
-header { display: flex; justify-content: space-between; align-items: baseline; }
-.controls { display: flex; gap: 16px; margin: 12px 0; align-items: center; }
-.import input { font-size: 12px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; white-space: pre-line; }
-th { background: #f2f2f2; }
+/* Leonida Platinum — original design. Sunset gradient header, deep navy body,
+   pink and teal accents. No game artwork, no logos: colour and type only. */
+:root {
+  --navy: #14102b;
+  --navy-soft: #1e1840;
+  --card: #241d4d;
+  --card-soft: #2c2560;
+  --ink: #f4f1ff;
+  --muted: #b9b2dd;
+  --pink: #ff5e8a;
+  --teal: #2fd6c8;
+  --gold: #ffc857;
+  --silver: #c9d1e3;
+  --bronze: #e0955a;
+  --line: #3a3170;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--navy);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  line-height: 1.5;
+}
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 28px 28px 24px;
+  background: linear-gradient(115deg, #3b115f 0%, #a4133c 52%, #ff6b35 100%);
+}
+.kicker {
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffd9e4;
+}
+h1 { margin: 0; font-size: 44px; line-height: 1.05; letter-spacing: -0.01em; }
+.tagline { margin: 8px 0 0; max-width: 560px; color: #ffe9f0; }
+.progress-card {
+  background: rgba(20, 16, 43, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 14px 18px;
+  min-width: 280px;
+}
+.progress-count { margin: 0; font-size: 24px; font-weight: 800; }
+.progress-bar {
+  height: 12px;
+  margin: 10px 0 8px;
+  border-radius: 6px;
+  background: #3a3170;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transition: width 0.3s ease;
+}
+.progress-detail { margin: 0; color: var(--muted); font-size: 14px; }
+.progress-note { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 14px 28px 0;
+  background: var(--navy);
+}
+.tab {
+  border: 1px solid var(--line);
+  border-bottom: none;
+  background: var(--navy-soft);
+  color: var(--ink);
+  padding: 10px 18px;
+  border-radius: 10px 10px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tab.is-active { background: var(--card); color: var(--gold); }
+.view { display: none; padding: 20px 28px 28px; }
+.view.is-active { display: block; }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+  padding: 14px;
+  background: var(--navy-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.search input, .grade-filter select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--navy);
+  color: var(--ink);
+  font-size: 14px;
+}
+.kind-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.kind-btn {
+  border: 1px solid var(--line);
+  background: var(--navy);
+  color: var(--ink);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.kind-btn.is-active { background: var(--pink); border-color: var(--pink); color: #fff; }
+.spoiler-toggle { font-size: 14px; font-weight: 700; cursor: pointer; }
+.io-buttons { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.io-buttons button, .import {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.import input { display: none; }
+.list-meta { color: var(--muted); font-size: 13px; margin: 14px 0 10px; }
+.tracker-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr);
+  gap: 20px;
+  align-items: start;
+}
+.trophy-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.trophy-card {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.trophy-card.is-earned { border-color: var(--teal); background: var(--card-soft); }
+.trophy-card.is-open { outline: 2px solid var(--gold); }
+.trophy-card input[type="checkbox"] { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--teal); cursor: pointer; }
+.trophy-name { margin: 0; font-size: 16px; font-weight: 800; }
+.trophy-card.is-earned .trophy-name { text-decoration: line-through; text-decoration-color: var(--teal); }
+.trophy-desc { margin: 2px 0 6px; color: var(--muted); font-size: 14px; }
+.trophy-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--muted);
+}
+.tag.grade-platinum { background: var(--gold); color: #241a00; }
+.tag.grade-gold { background: var(--gold); color: #241a00; }
+.tag.grade-silver { background: var(--silver); color: #1c2333; }
+.tag.grade-bronze { background: var(--bronze); color: #2b1503; }
+.tag.missable { background: #7a1030; color: #ffd9e4; }
+.tag.hidden { background: #4a2b7a; color: #e3d9ff; }
+.missable-note { margin: 8px 0 0; color: #ffb3c6; font-size: 13px; font-weight: 700; }
+.detail {
+  position: sticky;
+  top: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+.detail-empty { color: var(--muted); margin: 0; }
+.detail h2 { margin: 0 0 4px; font-size: 22px; }
+.detail .trophy-desc { font-size: 15px; }
+.detail-guide { margin: 14px 0; font-size: 15px; white-space: pre-line; }
+.detail-guide strong { color: var(--gold); }
+.detail-sources { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
+.detail-sources h3 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.detail-sources ul { margin: 0; padding-left: 18px; }
+.detail-sources a { color: var(--teal); font-size: 14px; }
+.detail-meta { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+.spoiler-hidden { color: var(--muted); font-style: italic; }
+h2 { font-size: 26px; margin: 0 0 8px; }
+.section-intro { max-width: 760px; color: var(--muted); margin: 0 0 20px; }
+.roadmap { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; max-width: 860px; }
+.roadmap-step {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--pink);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.roadmap-step h3 { margin: 0 0 4px; font-size: 19px; }
+.roadmap-hours { margin: 0 0 8px; color: var(--gold); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+.roadmap-step p { margin: 0 0 10px; }
+.roadmap-trophies { display: flex; flex-wrap: wrap; gap: 6px; }
+.roadmap-trophies .tag { cursor: default; }
+footer {
+  padding: 20px 28px 32px;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+}
+footer p { max-width: 860px; }
+@media (max-width: 900px) {
+  .tracker-layout { grid-template-columns: 1fr; }
+  .detail { position: static; }
+  h1 { font-size: 34px; }
+  .masthead, .tabs, .view, footer { padding-left: 14px; padding-right: 14px; }
+}
